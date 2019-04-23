@@ -48,6 +48,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EnglishTransformer.cs" />
     <Compile Include="EnumerableExtensionTests.cs" />
     <Compile Include="Predicate.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
