@@ -15,14 +15,12 @@ namespace PseudoEnumerable
                     yield return element;
                 }
             }
-
         }
 
         public static IEnumerable<TResult> Transform<TSource, TResult>(this IEnumerable<TSource> source,
             ITransformer<TSource, TResult> transformer)
         {
-            // Call EnumerableExtension.Transform with delegate
-            throw new NotImplementedException();
+            return source.Transform(transformer.Transform);
         }
 
         public static IEnumerable<TSource> SortBy<TSource>(this IEnumerable<TSource> source,
@@ -36,15 +34,17 @@ namespace PseudoEnumerable
         public static IEnumerable<TSource> Filter<TSource>(this IEnumerable<TSource> source,
             Predicate<TSource> predicate)
         {
-            // Call EnumerableExtension.Filter with interface
-            throw new NotImplementedException();
+            PredicateAdapter<TSource> adapter = new PredicateAdapter<TSource>(predicate);
+            return source.Filter(adapter);
         }
 
         public static IEnumerable<TResult> Transform<TSource, TResult>(this IEnumerable<TSource> source,
             Converter<TSource, TResult> transformer)
         {
-            // Implementation Day 13 Task 1 (ArrayExtension)
-            throw new NotImplementedException();
+            foreach (var element in source)
+            {
+                yield return transformer(element);
+            }
         }
 
         public static IEnumerable<TSource> SortBy<TSource>(this IEnumerable<TSource> source,
