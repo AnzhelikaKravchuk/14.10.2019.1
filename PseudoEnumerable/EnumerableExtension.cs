@@ -47,7 +47,7 @@ namespace PseudoEnumerable
             Predicate<TSource> predicate)
         {
             // Call EnumerableExtension.Filter with interface
-            throw new NotImplementedException();
+            return source.Filter((IPredicate<TSource>)predicate.Method);
         }
 
         public static IEnumerable<TResult> Transform<TSource, TResult>(this IEnumerable<TSource> source,
