@@ -8,16 +8,7 @@ namespace PseudoEnumerable
         public static IEnumerable<TSource> Filter<TSource>(this IEnumerable<TSource> source,
             IPredicate<TSource> predicate)
         {
-            if (source == null)
-            {
-                throw new ArgumentNullException($"{nameof(source)} cannot be null");
-            }
-
-            if (predicate == null)
-            {
-                throw new ArgumentNullException($"{nameof(predicate)} cannot be null");
-            }
-
+            Check(source, predicate);
             foreach (var item in source)
             {
                 if (predicate.IsMatching(item))
@@ -30,16 +21,7 @@ namespace PseudoEnumerable
         public static IEnumerable<TResult> Transform<TSource, TResult>(this IEnumerable<TSource> source,
             ITransformer<TSource, TResult> transformer)
         {
-            if (source == null)
-            {
-                throw new ArgumentNullException($"{nameof(source)} cannot be null");
-            }
-
-            if (transformer == null)
-            {
-                throw new ArgumentNullException($"{nameof(transformer)} cannot be null");
-            }
-            
+            Check(source, transformer);
             foreach (var item in source)
             {
                 yield return transformer.Transform(item);
@@ -61,10 +43,7 @@ namespace PseudoEnumerable
 
             var resultList = new List<TSource>(source);
             resultList.Sort(comparer);
-            foreach (var item in resultList)
-            {
-                yield return item;
-            }
+            return resultList;
         }
 
         public static IEnumerable<TSource> Filter<TSource>(this IEnumerable<TSource> source,
@@ -86,6 +65,32 @@ namespace PseudoEnumerable
         {
             // Call EnumerableExtension.SortBy with interface
             throw new NotImplementedException();
+        }
+
+        private static void Check<TSource>(IEnumerable<TSource> source, IPredicate<TSource> predicate)
+        {
+            if (source == null)
+            {
+                throw new ArgumentNullException($"{nameof(source)} cannot be null");
+            }
+
+            if (predicate == null)
+            {
+                throw new ArgumentNullException($"{nameof(predicate)} cannot be null");
+            }
+        }
+
+        private static void Check<TSource, TResult>(IEnumerable<TSource> source, ITransformer<TSource, TResult> transformer)
+        {
+            if (source == null)
+            {
+                throw new ArgumentNullException($"{nameof(source)} cannot be null");
+            }
+
+            if (transformer == null)
+            {
+                throw new ArgumentNullException($"{nameof(transformer)} cannot be null");
+            }
         }
     }
 }
