@@ -47,7 +47,21 @@ namespace PseudoEnumerable
             Predicate<TSource> predicate)
         {
             // Call EnumerableExtension.Filter with interface
-            return source.Filter((IPredicate<TSource>)predicate.Method);
+
+            AdarterFilter<TSource> adarter = new AdarterFilter<TSource>(predicate);
+            return source.Filter(adarter);
+        }
+
+        public class AdarterFilter<TSource> : IPredicate<TSource>
+        {
+            private Predicate<TSource> predicate;
+
+            public AdarterFilter(Predicate<TSource> predicate)
+            {
+                this.predicate = predicate;
+            }
+
+            public bool IsMatching(TSource item) => predicate(item);
         }
 
         public static IEnumerable<TResult> Transform<TSource, TResult>(this IEnumerable<TSource> source,
