@@ -8,13 +8,9 @@ namespace PseudoEnumerable
         public static IEnumerable<TSource> Filter<TSource>(this IEnumerable<TSource> source,
             IPredicate<TSource> predicate)
         {
-            foreach (TSource item in source)
-            {
-                if (predicate.IsMatching(item))
-                {
-                    yield return item;
-                }
-            }
+            CheckArguments(source, predicate);
+
+            return FilterLogic(source, predicate);
         }
 
         public static IEnumerable<TResult> Transform<TSource, TResult>(this IEnumerable<TSource> source,
@@ -83,6 +79,31 @@ namespace PseudoEnumerable
             public bool IsMatching(TSource source)
             {
                 return predicate.Invoke(source);
+            }
+        }
+
+
+        private static IEnumerable<TSource> FilterLogic<TSource>(IEnumerable<TSource> source, IPredicate<TSource> predicate)
+        {
+            foreach (TSource item in source)
+            {
+                if (predicate.IsMatching(item))
+                {
+                    yield return item;
+                }
+            }
+        }
+
+        private static void CheckArguments<TSource>(IEnumerable<TSource> source, dynamic predicate)
+        {
+            if (source == null)
+            {
+                throw new ArgumentNullException($"{nameof(source)} must not be  null");
+            }
+
+            if (predicate == null)
+            {
+                throw new ArgumentNullException($"{nameof(predicate)} must not be null");
             }
         }
     }
