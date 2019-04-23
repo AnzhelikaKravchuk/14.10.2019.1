@@ -58,13 +58,14 @@ namespace PseudoEnumerable
         public static IEnumerable<TSource> Filter<TSource>(this IEnumerable<TSource> source,
             Predicate<TSource> predicate)
         {
-            // Call EnumerableExtension.Filter with interface
-            throw new NotImplementedException();
+            IPredicate<TSource> ipred = predicate.Target as IPredicate<TSource>;
+            return source.Filter(ipred);
         }
 
         public static IEnumerable<TResult> Transform<TSource, TResult>(this IEnumerable<TSource> source,
             Converter<TSource, TResult> transformer)
         {
+
             // Implementation Day 13 Task 1 (ArrayExtension)
             throw new NotImplementedException();
         }
