@@ -27,15 +27,7 @@ namespace PseudoEnumerable
             ITransformer<TSource, TResult> transformer)
         {
             Validation(source);
-            return TransformCore();
-
-            IEnumerable<TResult> TransformCore()
-            {
-                foreach (var element in source)
-                {
-                    yield return transformer.Transform(element);
-                }
-            }
+            return source.Transform(new Converter<TSource, TResult>(transformer.Transform));           
         }
 
         public static IEnumerable<TSource> SortBy<TSource>(this IEnumerable<TSource> source,
@@ -66,8 +58,16 @@ namespace PseudoEnumerable
             Converter<TSource, TResult> transformer)
         {
 
-            // Implementation Day 13 Task 1 (ArrayExtension)
-            throw new NotImplementedException();
+            Validation(source);
+            return TransformCore();
+
+            IEnumerable<TResult> TransformCore()
+            {
+                foreach (var element in source)
+                {
+                    yield return transformer(element);
+                }
+            }
         }
 
         public static IEnumerable<TSource> SortBy<TSource>(this IEnumerable<TSource> source,
@@ -104,5 +104,7 @@ namespace PseudoEnumerable
             public bool IsMatching(T item) => predicate.Invoke(item);
 
         }
+
+      
     }
 }
