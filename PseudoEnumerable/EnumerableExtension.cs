@@ -29,7 +29,11 @@ namespace PseudoEnumerable
         public static IEnumerable<TSource> SortBy<TSource>(this IEnumerable<TSource> source,
             IComparer<TSource> comparer)
         {
-            return Sorted(source, comparer);
+            var sorted = Sorted(source, comparer);
+            foreach (var item in sorted)
+            {
+                yield return item;
+            }
         }
 
         public static IEnumerable<TSource> Filter<TSource>(this IEnumerable<TSource> source,
