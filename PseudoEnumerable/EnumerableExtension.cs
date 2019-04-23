@@ -29,8 +29,7 @@ namespace PseudoEnumerable
         public static IEnumerable<TResult> Transform<TSource, TResult>(this IEnumerable<TSource> source,
             ITransformer<TSource, TResult> transformer)
         {
-            // Call EnumerableExtension.Transform with delegate
-            throw new NotImplementedException();
+            return Transform(source, transformer.Transform);
         }
 
         public static IEnumerable<TSource> SortBy<TSource>(this IEnumerable<TSource> source,
@@ -59,16 +58,28 @@ namespace PseudoEnumerable
         public static IEnumerable<TSource> Filter<TSource>(this IEnumerable<TSource> source,
             Predicate<TSource> predicate)
         {
-            
-            // Call EnumerableExtension.Filter with interface
-            throw new NotImplementedException();
+            return Filter(source, new FilterDelegateAdapter<TSource>(predicate));
         }
 
         public static IEnumerable<TResult> Transform<TSource, TResult>(this IEnumerable<TSource> source,
             Converter<TSource, TResult> transformer)
         {
-            // Implementation Day 13 Task 1 (ArrayExtension)
-            throw new NotImplementedException();
+            if (source == null)
+            {
+                throw new ArgumentNullException($"Array can not be null. Parameter name: { nameof(source) }.");
+            }
+
+            if (!source.GetEnumerator().MoveNext())
+            {
+                throw new ArgumentException($"The array should contain at least 1 element. Parameter name: { nameof(source) }");
+            }
+
+            if (transformer == null)
+            {
+                throw new ArgumentNullException($"Predicate can not be null. Parameter name: { nameof(transformer) }.");
+            }
+
+            return GetTransformedArray(source, transformer);
         }
 
         public static IEnumerable<TSource> SortBy<TSource>(this IEnumerable<TSource> source,
@@ -91,15 +102,15 @@ namespace PseudoEnumerable
             }
         }
 
-        private static IEnumerable<TResult> GetTransformedArray<TSource, TResult>(IEnumerable<TSource> array, ITransformer<TSource, TResult> transformer)
+        private static IEnumerable<TResult> GetTransformedArray<TSource, TResult>(IEnumerable<TSource> array, Converter<TSource, TResult> transformer)
         {
             foreach (var element in array)
-            {
-                yield return transformer.Transform(element);
+            { 
+                yield return transformer.Invoke(element);
             }
         }
 
-       private static void CheckInput<T>(T[] sortedArray)
+        private static void CheckInput<T>(T[] sortedArray)
        {
             if (sortedArray == null)
             {
@@ -111,6 +122,21 @@ namespace PseudoEnumerable
                 throw new ArgumentException($"Array can not be empty. { nameof(sortedArray) }.");
             }
        }
+
+        private class FilterDelegateAdapter<T> : IPredicate<T>
+        {
+            private readonly Predicate<T> method;
+
+            public FilterDelegateAdapter(Predicate<T> method)
+            {
+                this.method = method ?? throw new ArgumentNullException(nameof(method));
+            }
+
+            public bool IsMatching(T item)
+            {
+                return method.Invoke(item);
+            }
+        }
 
         #endregion
     }
