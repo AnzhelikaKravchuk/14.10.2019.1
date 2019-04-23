@@ -8,8 +8,20 @@ namespace PseudoEnumerable
         public static IEnumerable<TSource> Filter<TSource>(this IEnumerable<TSource> source,
             IPredicate<TSource> predicate)
         {
-            // Implementation Day 13 Task 1 (ArrayExtension)
-            throw new NotImplementedException();
+            CheckOnNull(source);
+            CheckOnNull(predicate);
+            IEnumerable<TSource> GetFilteredItems()
+            {
+                foreach (var item in source)
+                {
+                    if (predicate.IsMatching(item))
+                    {
+                        yield return item;
+                    }
+                }
+            }
+
+            return GetFilteredItems();
         }
 
         public static IEnumerable<TResult> Transform<TSource, TResult>(this IEnumerable<TSource> source,
@@ -22,8 +34,16 @@ namespace PseudoEnumerable
         public static IEnumerable<TSource> SortBy<TSource>(this IEnumerable<TSource> source,
             IComparer<TSource> comparer)
         {
-            // Implementation Day 13 Task 1 (ArrayExtension)
-            throw new NotImplementedException();
+            CheckOnNull(source);
+            CheckOnNull(comparer);
+            List<TSource> list = new List<TSource>(source);
+            return GetSorted();
+
+            IEnumerable<TSource> GetSorted()
+            {
+                list.Sort(comparer);
+                return list;
+            }
         }
 
         public static IEnumerable<TSource> Filter<TSource>(this IEnumerable<TSource> source,
@@ -45,6 +65,14 @@ namespace PseudoEnumerable
         {
             // Call EnumerableExtension.SortBy with interface
             throw new NotImplementedException();
+        }
+
+        private static void CheckOnNull(object obj)
+        {
+            if (obj == null)
+            {
+                throw new ArgumentNullException($"{nameof(obj)} can't be null.");
+            }
         }
     }
 }
