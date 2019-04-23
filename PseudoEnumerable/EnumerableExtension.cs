@@ -8,8 +8,23 @@ namespace PseudoEnumerable
         public static IEnumerable<TSource> Filter<TSource>(this IEnumerable<TSource> source,
             IPredicate<TSource> predicate)
         {
-            // Implementation Day 13 Task 1 (ArrayExtension)
-            throw new NotImplementedException();
+            if (source == null)
+            {
+                throw new ArgumentNullException($"{nameof(source)} cannot be null");
+            }
+
+            if (predicate == null)
+            {
+                throw new ArgumentNullException($"{nameof(predicate)} cannot be null");
+            }
+
+            foreach (TSource number in source)
+            {
+                if (predicate.IsMatching(number))
+                {
+                    yield return number;
+                }
+            }
         }
 
         public static IEnumerable<TResult> Transform<TSource, TResult>(this IEnumerable<TSource> source,
@@ -22,8 +37,20 @@ namespace PseudoEnumerable
         public static IEnumerable<TSource> SortBy<TSource>(this IEnumerable<TSource> source,
             IComparer<TSource> comparer)
         {
-            // Implementation Day 13 Task 1 (ArrayExtension)
-            throw new NotImplementedException();
+            if (source == null)
+            {
+                throw new ArgumentNullException($"{nameof(source)} cannot be null");
+            }
+
+            if (comparer == null)
+            {
+                throw new ArgumentNullException($"{nameof(comparer)} cannot be null");
+            }
+
+            List<TSource> list = new List<TSource>(source);
+            list.Sort(comparer);
+
+            return list;
         }
 
         public static IEnumerable<TSource> Filter<TSource>(this IEnumerable<TSource> source,
