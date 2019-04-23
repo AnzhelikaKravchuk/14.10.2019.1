@@ -1,6 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
 
 namespace PseudoEnumerable
 {
@@ -10,21 +9,19 @@ namespace PseudoEnumerable
             IPredicate<TSource> predicate)
         {
                 foreach (TSource item in source)
-            {
-                if (predicate.IsMatching(item))
                 {
-                    yield return item;
+                    if (predicate.IsMatching(item))
+                    {
+                        yield return item;
+                    }
                 }
-            }
         }
 
         public static IEnumerable<TResult> Transform<TSource, TResult>(this IEnumerable<TSource> source,
             ITransformer<TSource, TResult> transformer)
         {
-            foreach (TSource item in source)
-            {
-                yield return transformer.Transform(item);
-            }
+            // Implementation Day 13 Task 1 (ArrayExtension)
+            throw new NotImplementedException();
         }
 
         public static IEnumerable<TSource> SortBy<TSource>(this IEnumerable<TSource> source,
