@@ -8,7 +8,6 @@ namespace PseudoEnumerable
         public static IEnumerable<TSource> Filter<TSource>(this IEnumerable<TSource> source,
             IPredicate<TSource> predicate)
         {
-
             ValidateIsNull(predicate, nameof(predicate));
             ValidateIsNull(source, nameof(source));
 
@@ -26,13 +25,7 @@ namespace PseudoEnumerable
         public static IEnumerable<TResult> Transform<TSource, TResult>(this IEnumerable<TSource> source,
             ITransformer<TSource, TResult> transformer)
         {
-            ValidateIsNull(source, nameof(source));
-            ValidateIsNull(transformer, nameof(transformer));
-
-            foreach (var item in source)
-            {
-                yield return transformer.Transform(item);
-            }
+            throw new NotImplementedException();
         }
 
         public static IEnumerable<TSource> SortBy<TSource>(this IEnumerable<TSource> source,
@@ -58,15 +51,22 @@ namespace PseudoEnumerable
         public static IEnumerable<TSource> Filter<TSource>(this IEnumerable<TSource> source,
             Predicate<TSource> predicate)
         {
-            // Call EnumerableExtension.Filter with interface
-            throw new NotImplementedException();
+            ValidateIsNull(source, nameof(source));
+            ValidateIsNull(predicate, nameof(predicate));
+
+            return source.Filter(new DefaultPredicate<TSource>(predicate));
         }
 
         public static IEnumerable<TResult> Transform<TSource, TResult>(this IEnumerable<TSource> source,
             Converter<TSource, TResult> transformer)
         {
-            // Implementation Day 13 Task 1 (ArrayExtension)
-            throw new NotImplementedException();
+            ValidateIsNull(source, nameof(source));
+            ValidateIsNull(transformer, nameof(transformer));
+
+            foreach (var item in source)
+            {
+                yield return transformer(item);
+            }
         }
 
         public static IEnumerable<TSource> SortBy<TSource>(this IEnumerable<TSource> source,
@@ -79,7 +79,7 @@ namespace PseudoEnumerable
         /// <summary>
         /// Checks if value is null.
         /// </summary>
-        /// <param name="array">The collection to check.</param>
+        /// <param name="value">The reference to check.</param>
         /// <exception cref="ArgumentNullException">Throws when collection is null.</exception>
         private static void ValidateIsNull<T>(T value, string name)
         {
