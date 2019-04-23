@@ -60,22 +60,19 @@ namespace PseudoEnumerable
         public static IEnumerable<TSource> Filter<TSource>(this IEnumerable<TSource> source,
             Predicate<TSource> predicate)
         {
-            // Call EnumerableExtension.Filter with interface
-            throw new NotImplementedException();
+            return Filter(source, new PredicateAdapter<TSource>(predicate));
         }
 
-        public static IEnumerable<TResult> Transform<TSource, TResult>(this IEnumerable<TSource> source,
-            Converter<TSource, TResult> transformer)
-        {
-            // Implementation Day 13 Task 1 (ArrayExtension)
-            throw new NotImplementedException();
-        }
+       //public static IEnumerable<TResult> Transform<TSource, TResult>(this IEnumerable<TSource> source,
+       //    Converter<TSource, TResult> transformer)
+       //{
+       //
+       //}
 
         public static IEnumerable<TSource> SortBy<TSource>(this IEnumerable<TSource> source,
             Comparison<TSource> comparer)
         {
-            // Call EnumerableExtension.SortBy with interface
-            throw new NotImplementedException();
+            return source.SortBy(comparer);
         }
 
         private static void CheckForExceptions<T>(IEnumerable<T> array)
