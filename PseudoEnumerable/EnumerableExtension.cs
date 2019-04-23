@@ -25,15 +25,7 @@ namespace PseudoEnumerable
         public static IEnumerable<TResult> Transform<TSource, TResult>(this IEnumerable<TSource> source,
             ITransformer<TSource, TResult> transformer)
         {
-            if (transformer == null)
-            {
-                yield break;
-            }
-
-            foreach (var i in source)
-            {
-                yield return transformer.Transform(i);
-            }
+            return source.Transform(transformer.Transform);
         }
 
         public static IEnumerable<TSource> SortBy<TSource>(this IEnumerable<TSource> source,
@@ -59,8 +51,15 @@ namespace PseudoEnumerable
         public static IEnumerable<TResult> Transform<TSource, TResult>(this IEnumerable<TSource> source,
             Converter<TSource, TResult> transformer)
         {
-            // Implementation Day 13 Task 1 (ArrayExtension)
-            throw new NotImplementedException();
+            if (source == null || transformer == null)
+            {
+                yield break;
+            }
+
+            foreach (var item in source)
+            {
+                yield return transformer.Invoke(item);
+            }
         }
 
         public static IEnumerable<TSource> SortBy<TSource>(this IEnumerable<TSource> source,

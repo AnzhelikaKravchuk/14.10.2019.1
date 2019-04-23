@@ -14,6 +14,7 @@ namespace PseudoEnumerable
         {
             this.predicate = predicate;
         }
+
         public bool IsMatching(T item)
         {
             return this.predicate.Invoke(item);
