@@ -1,6 +1,6 @@
 ﻿namespace PseudoEnumerable
 {
-    public interface IPredicate<T>
+    public interface IPredicate<in T>
     {
         bool IsMatching(T item);
     }
