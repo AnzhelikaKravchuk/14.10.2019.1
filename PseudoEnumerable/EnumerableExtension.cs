@@ -8,22 +8,63 @@ namespace PseudoEnumerable
         public static IEnumerable<TSource> Filter<TSource>(this IEnumerable<TSource> source,
             IPredicate<TSource> predicate)
         {
-            // Implementation Day 13 Task 1 (ArrayExtension)
-            throw new NotImplementedException();
+            if (source == null)
+            {
+                throw new ArgumentNullException($"{nameof(source)} cannot be null");
+            }
+
+            if (predicate == null)
+            {
+                throw new ArgumentNullException($"{nameof(predicate)} cannot be null");
+            }
+
+            foreach (var item in source)
+            {
+                if (predicate.IsMatching(item))
+                {
+                    yield return item;
+                }
+            }
         }
 
         public static IEnumerable<TResult> Transform<TSource, TResult>(this IEnumerable<TSource> source,
             ITransformer<TSource, TResult> transformer)
         {
-            // Call EnumerableExtension.Transform with delegate
-            throw new NotImplementedException();
+            if (source == null)
+            {
+                throw new ArgumentNullException($"{nameof(source)} cannot be null");
+            }
+
+            if (transformer == null)
+            {
+                throw new ArgumentNullException($"{nameof(transformer)} cannot be null");
+            }
+            
+            foreach (var item in source)
+            {
+                yield return transformer.Transform(item);
+            }
         }
 
         public static IEnumerable<TSource> SortBy<TSource>(this IEnumerable<TSource> source,
             IComparer<TSource> comparer)
         {
-            // Implementation Day 13 Task 1 (ArrayExtension)
-            throw new NotImplementedException();
+            if (source == null)
+            {
+                throw new ArgumentNullException($"{nameof(source)} cannot be null");
+            }
+
+            if (comparer == null)
+            {
+                throw new ArgumentNullException($"{nameof(comparer)} cannot be null");
+            }
+
+            var resultList = new List<TSource>(source);
+            resultList.Sort(comparer);
+            foreach (var item in resultList)
+            {
+                yield return item;
+            }
         }
 
         public static IEnumerable<TSource> Filter<TSource>(this IEnumerable<TSource> source,
