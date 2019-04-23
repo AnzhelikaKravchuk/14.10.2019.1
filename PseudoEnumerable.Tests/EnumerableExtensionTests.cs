@@ -14,7 +14,19 @@ namespace PseudoEnumerable.Tests
         public IEnumerable<int> Filter_FiltersNumbers(IEnumerable<int> source)
             => EnumerableExtension.Filter(source, EvenNumbers);
 
+        [TestCase(arg: new string[] { "some", "string" }, ExpectedResult = new int[] { 4, 6 })]
+        public IEnumerable<int> Transform_TransformsNumbers(IEnumerable<string> source)
+            => EnumerableExtension.Transform(source, new Lengths());
+
         private bool EvenNumbers(int source)
             => source % 2 == 0;
+        
+        internal class Lengths : ITransformer<string, int>
+        {
+            public int Transform(string item)
+            {
+                return item.Length;
+            }
+        }
     }
 }
