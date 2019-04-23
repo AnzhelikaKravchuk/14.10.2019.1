@@ -75,7 +75,20 @@ namespace PseudoEnumerable
             Comparison<TSource> comparer)
         {
             // Call EnumerableExtension.SortBy with interface
-            throw new NotImplementedException();
+            AdarterSortBy<TSource> adarter = new AdarterSortBy<TSource>(comparer);
+            return source.SortBy(adarter);
+        }
+
+        public class AdarterSortBy<TSource> : IComparer<TSource>
+        {
+            private Comparison<TSource> comparer;
+
+            public AdarterSortBy(Comparison<TSource> comparer)
+            {
+                this.comparer = comparer;
+            }
+
+            public int Compare(TSource x, TSource y) => comparer(x, y);
         }
     }
 }
