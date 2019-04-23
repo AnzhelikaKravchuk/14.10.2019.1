@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CustomFilter.cs" />
+    <Compile Include="CustomTransformer.cs" />
     <Compile Include="EnumerableExtensionTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
