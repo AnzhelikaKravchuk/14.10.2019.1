@@ -47,7 +47,6 @@ namespace PseudoEnumerable
             Predicate<TSource> predicate)
         {
             // Call EnumerableExtension.Filter with interface
-
             AdarterFilter<TSource> adarter = new AdarterFilter<TSource>(predicate);
             return source.Filter(adarter);
         }
@@ -68,7 +67,8 @@ namespace PseudoEnumerable
             ITransformer<TSource, TResult> transformer)
         {
             // Call EnumerableExtension.Transform with delegate
-            throw new NotImplementedException();
+            Converter<TSource, TResult> transformerDelegate = transformer.Transform;
+            return source.Transform(transformerDelegate);
         }
 
         public static IEnumerable<TSource> SortBy<TSource>(this IEnumerable<TSource> source,

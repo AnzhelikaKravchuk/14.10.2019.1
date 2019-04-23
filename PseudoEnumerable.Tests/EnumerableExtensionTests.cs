@@ -10,11 +10,17 @@ namespace PseudoEnumerable.Tests
     [TestFixture]
     public class EnumerableExtensionTests
     {
+        class Foo : ITransformer<int, string>
+        {
+            public string Transform(int item) => item.ToString();
+        }
+
         [Test]
         public void Filter_DigitInNumber_WithConcreteNumber()
         {
             int[] g = new int[] {1, 23, 32};
-            int[] f = g.Filter(el => el < 5).ToArray();
+            Foo foo = new Foo();
+            string[] f = g.Transform(foo).ToArray();
         }
     }
 }
