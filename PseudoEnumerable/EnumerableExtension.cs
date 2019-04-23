@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace PseudoEnumerable
 {
@@ -8,22 +9,48 @@ namespace PseudoEnumerable
         public static IEnumerable<TSource> Filter<TSource>(this IEnumerable<TSource> source,
             IPredicate<TSource> predicate)
         {
-            // Implementation Day 13 Task 1 (ArrayExtension)
-            throw new NotImplementedException();
+                foreach (TSource item in source)
+            {
+                if (predicate.IsMatching(item))
+                {
+                    yield return item;
+                }
+            }
         }
 
         public static IEnumerable<TResult> Transform<TSource, TResult>(this IEnumerable<TSource> source,
             ITransformer<TSource, TResult> transformer)
         {
-            // Call EnumerableExtension.Transform with delegate
-            throw new NotImplementedException();
+            foreach (TSource item in source)
+            {
+                yield return transformer.Transform(item);
+            }
         }
 
         public static IEnumerable<TSource> SortBy<TSource>(this IEnumerable<TSource> source,
             IComparer<TSource> comparer)
         {
-            // Implementation Day 13 Task 1 (ArrayExtension)
-            throw new NotImplementedException();
+            int counter = 0;
+            List<TSource> result = new List<TSource>(source);
+
+            foreach (var x in source)
+            {
+                result[counter] = x;
+                counter++;
+            }
+
+            result.Sort(comparer);
+
+            return Iterator();
+
+            IEnumerable<TSource> Iterator()
+            {
+                foreach (TSource x in result)
+                {
+                    yield return x;
+                }
+            }
+            
         }
 
         public static IEnumerable<TSource> Filter<TSource>(this IEnumerable<TSource> source,
