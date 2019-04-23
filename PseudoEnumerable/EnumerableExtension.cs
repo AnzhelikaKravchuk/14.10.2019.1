@@ -2,20 +2,7 @@
 using System.Collections.Generic;
 
 namespace PseudoEnumerable
-{
-    internal class PredicateAdapter<T> : IPredicate<T>
-    {
-        private Predicate<T> predicate;
-
-        public PredicateAdapter(Predicate<T> predicate)
-        {
-            this.predicate = predicate;
-        }
-        
-        public bool IsMatching(T item) => predicate.Invoke(item);
-       
-    }
-
+{ 
     public static class EnumerableExtension
     {
         public static IEnumerable<TSource> Filter<TSource>(this IEnumerable<TSource> source,
@@ -105,5 +92,17 @@ namespace PseudoEnumerable
             }
         }
 
+        private class PredicateAdapter<T> : IPredicate<T>
+        {
+            private Predicate<T> predicate;
+
+            public PredicateAdapter(Predicate<T> predicate)
+            {
+                this.predicate = predicate;
+            }
+
+            public bool IsMatching(T item) => predicate.Invoke(item);
+
+        }
     }
 }
