@@ -50,7 +50,6 @@
     <Compile Include="ITransformer.cs" />
     <Compile Include="PredicateAdapter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="TransfornToNumber.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

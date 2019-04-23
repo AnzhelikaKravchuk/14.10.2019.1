@@ -63,11 +63,19 @@ namespace PseudoEnumerable
             return Filter(source, new PredicateAdapter<TSource>(predicate));
         }
 
-       //public static IEnumerable<TResult> Transform<TSource, TResult>(this IEnumerable<TSource> source,
-       //    Converter<TSource, TResult> transformer)
-       //{
-       //
-       //}
+       public static IEnumerable<TResult> Transform<TSource, TResult>(this IEnumerable<TSource> source,
+           Converter<TSource, TResult> transformer)
+       {
+           return TransformerCollection(source, transformer);
+       }
+
+        private static IEnumerable<TResult> TransformerCollection<TSource, TResult>(IEnumerable<TSource> source, Converter<TSource, TResult> transformer)
+        {
+            foreach (var item in source)
+            {
+                yield return transformer(item);
+            }
+        }
 
         public static IEnumerable<TSource> SortBy<TSource>(this IEnumerable<TSource> source,
             Comparison<TSource> comparer)
