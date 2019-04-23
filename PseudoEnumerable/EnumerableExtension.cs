@@ -8,22 +8,28 @@ namespace PseudoEnumerable
         public static IEnumerable<TSource> Filter<TSource>(this IEnumerable<TSource> source,
             IPredicate<TSource> predicate)
         {
-            // Implementation Day 13 Task 1 (ArrayExtension)
-            throw new NotImplementedException();
+            foreach (var item in source)
+            {
+                if (predicate.IsMatching(item))
+                {
+                    yield return item;
+                }
+            }
         }
 
         public static IEnumerable<TResult> Transform<TSource, TResult>(this IEnumerable<TSource> source,
             ITransformer<TSource, TResult> transformer)
         {
-            // Call EnumerableExtension.Transform with delegate
-            throw new NotImplementedException();
+            foreach (var item in source)
+            {
+                yield return transformer.Transform(item);
+            }
         }
 
         public static IEnumerable<TSource> SortBy<TSource>(this IEnumerable<TSource> source,
             IComparer<TSource> comparer)
         {
-            // Implementation Day 13 Task 1 (ArrayExtension)
-            throw new NotImplementedException();
+            return Sorted(source, comparer);
         }
 
         public static IEnumerable<TSource> Filter<TSource>(this IEnumerable<TSource> source,
@@ -45,6 +51,13 @@ namespace PseudoEnumerable
         {
             // Call EnumerableExtension.SortBy with interface
             throw new NotImplementedException();
+        }
+
+        private static IEnumerable<TSource> Sorted<TSource>(IEnumerable<TSource> collection, IComparer<TSource> comparer)
+        {
+            List<TSource> result = new List<TSource>(collection);
+            result.Sort(comparer);
+            return result;
         }
     }
 }
