@@ -3,6 +3,19 @@ using System.Collections.Generic;
 
 namespace PseudoEnumerable
 {
+    internal class PredicateAdapter<T> : IPredicate<T>
+    {
+        private Predicate<T> predicate;
+
+        public PredicateAdapter(Predicate<T> predicate)
+        {
+            this.predicate = predicate;
+        }
+        
+        public bool IsMatching(T item) => predicate.Invoke(item);
+       
+    }
+
     public static class EnumerableExtension
     {
         public static IEnumerable<TSource> Filter<TSource>(this IEnumerable<TSource> source,
@@ -46,7 +59,7 @@ namespace PseudoEnumerable
 
             IEnumerable<TSource> SortByCore()
             {
-                List<TSource> list = new List<TSource>(source);             
+                List<TSource> list = new List<TSource>(source);
                 list.Sort(comparer);
                 foreach (var element in list)
                 {
@@ -58,8 +71,8 @@ namespace PseudoEnumerable
         public static IEnumerable<TSource> Filter<TSource>(this IEnumerable<TSource> source,
             Predicate<TSource> predicate)
         {
-            IPredicate<TSource> ipred = predicate.Target as IPredicate<TSource>;
-            return source.Filter(ipred);
+            Validation(source);
+            return source.Filter(new PredicateAdapter<TSource>(predicate));
         }
 
         public static IEnumerable<TResult> Transform<TSource, TResult>(this IEnumerable<TSource> source,
