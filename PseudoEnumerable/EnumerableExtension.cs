@@ -38,25 +38,7 @@ namespace PseudoEnumerable
         public static IEnumerable<TResult> Transform<TSource, TResult>(this IEnumerable<TSource> source,
             ITransformer<TSource, TResult> transformer)
         {
-            if (source == null)
-            {
-                throw new ArgumentNullException($"The {nameof(source)} can not be NULL.");
-            }
-
-            if (transformer == null)
-            {
-                throw new ArgumentNullException($"The {nameof(transformer)} cannot be NULL.");
-            }
-
-            return Transform();
-
-            IEnumerable<TResult> Transform()
-            {
-                foreach (var item in source)
-                {
-                    yield return transformer.Transform(item);
-                }
-            }
+            return Transform(source, transformer.Transform);
         }
 
         public static IEnumerable<TSource> SortBy<TSource>(this IEnumerable<TSource> source,
@@ -98,8 +80,25 @@ namespace PseudoEnumerable
         public static IEnumerable<TResult> Transform<TSource, TResult>(this IEnumerable<TSource> source,
             Converter<TSource, TResult> transformer)
         {
-            // Implementation Day 13 Task 1 (ArrayExtension)
-            throw new NotImplementedException();
+            if (source == null)
+            {
+                throw new ArgumentNullException($"The {nameof(source)} can not be NULL.");
+            }
+
+            if (transformer == null)
+            {
+                throw new ArgumentNullException($"The {nameof(transformer)} cannot be NULL.");
+            }
+
+            return Transform();
+
+            IEnumerable<TResult> Transform()
+            {
+                foreach (var item in source)
+                {
+                    yield return transformer(item);
+                }
+            }
         }
 
         public static IEnumerable<TSource> SortBy<TSource>(this IEnumerable<TSource> source,

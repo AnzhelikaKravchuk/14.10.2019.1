@@ -12,6 +12,7 @@
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>true</Deterministic>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -31,6 +32,9 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="DoubleNumberTransformer">
+      <HintPath>..\..\.NET-Training.-Spring-2019\NET1.S.2019.Leshchevish.04\DoubleNumberTransformer\bin\Debug\DoubleNumberTransformer.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Xml.Linq" />
@@ -45,6 +49,7 @@
     <Compile Include="IPredicate.cs" />
     <Compile Include="ITransformer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="TransformerIEEE754.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

@@ -12,7 +12,7 @@ namespace PseudoEnumerable.Tests
     {
         #region Filter
 
-        private static IEnumerable<TestCaseData> Data_For_Filter_IPredicate
+        private static IEnumerable<TestCaseData> Data_For_Filter
         {
             get
             {
@@ -30,11 +30,11 @@ namespace PseudoEnumerable.Tests
             }
         }
 
-        [TestCaseSource(nameof(Data_For_Filter_IPredicate))]
+        [TestCaseSource(nameof(Data_For_Filter))]
         public void Filter_IPredicate(int[] source, IPredicate<int> predicate, int[] expectedArray) 
             => Assert.AreEqual(expectedArray, EnumerableExtension.Filter(source, predicate));
 
-        [TestCaseSource(nameof(Data_For_Filter_IPredicate))]
+        [TestCaseSource(nameof(Data_For_Filter))]
         public void Filter_Predicate(int[] source, IPredicate<int> predicate, int[] expectedArray) 
             => Assert.AreEqual(expectedArray, EnumerableExtension.Filter(source, predicate.IsMatching));
 
@@ -42,6 +42,49 @@ namespace PseudoEnumerable.Tests
         {
             public bool IsMatching(int item) => (item & 1) == 0;
         }
+
+        #endregion
+
+        #region Transform
+
+        private static IEnumerable<TestCaseData> Data_For_Transform
+        {
+            get
+            {
+                #region TransformerIEEE754
+
+                yield return new TestCaseData
+                (
+                    new double[] { -255.255, 255.255, 4294967295.0 },
+                    new TransformerIEEE754(),
+                    new string[] { "1100000001101111111010000010100011110101110000101000111101011100", "0100000001101111111010000010100011110101110000101000111101011100", "0100000111101111111111111111111111111111111000000000000000000000" }
+                );
+
+                yield return new TestCaseData
+                (
+                    new double[] { double.MinValue, double.MaxValue, double.Epsilon },
+                    new TransformerIEEE754(),
+                    new string[] { "1111111111101111111111111111111111111111111111111111111111111111", "0111111111101111111111111111111111111111111111111111111111111111", "0000000000000000000000000000000000000000000000000000000000000001" }
+                );
+                yield return new TestCaseData
+                (
+                    new double[] { double.NaN, double.NegativeInfinity, double.PositiveInfinity },
+                    new TransformerIEEE754(),
+                    new string[] { "1111111111111000000000000000000000000000000000000000000000000000", "1111111111110000000000000000000000000000000000000000000000000000", "0111111111110000000000000000000000000000000000000000000000000000" }
+                );
+                yield return new TestCaseData(new double[] { }, new TransformerIEEE754(), new string[] { });
+
+                #endregion
+            }
+        }
+
+        [TestCaseSource(nameof(Data_For_Transform))]
+        public void Transform_ITransformer(double[] source, ITransformer<double, string> transformer, string[] expectedArray)
+            => Assert.AreEqual(expectedArray, EnumerableExtension.Transform(source, transformer));
+
+        [TestCaseSource(nameof(Data_For_Transform))]
+        public void Transform_Converter(double[] source, ITransformer<double, string> transformer, string[] expectedArray)
+            => Assert.AreEqual(expectedArray, EnumerableExtension.Transform(source, transformer.Transform));
 
         #endregion
     }
