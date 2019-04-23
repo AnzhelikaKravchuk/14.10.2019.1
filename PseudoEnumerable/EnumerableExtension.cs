@@ -22,8 +22,7 @@ namespace PseudoEnumerable
         public static IEnumerable<TResult> Transform<TSource, TResult>(this IEnumerable<TSource> source,
             ITransformer<TSource, TResult> transformer)
         {
-            // Call EnumerableExtension.Transform with delegate
-            throw new NotImplementedException();
+            return source.Transform(transformer.Transform);
         }
 
         public static IEnumerable<TSource> SortBy<TSource>(this IEnumerable<TSource> source,
@@ -40,15 +39,15 @@ namespace PseudoEnumerable
         public static IEnumerable<TSource> Filter<TSource>(this IEnumerable<TSource> source,
             Predicate<TSource> predicate)
         {
-            // Call EnumerableExtension.Filter with interface
-            throw new NotImplementedException();
+            return source.Filter(new Adapter<TSource>(predicate));
         }
 
         public static IEnumerable<TResult> Transform<TSource, TResult>(this IEnumerable<TSource> source,
             Converter<TSource, TResult> transformer)
         {
-            // Implementation Day 13 Task 1 (ArrayExtension)
-            throw new NotImplementedException();
+            Validate(source);
+
+            return TransformCollection(source, transformer);
         }
 
         public static IEnumerable<TSource> SortBy<TSource>(this IEnumerable<TSource> source,
@@ -77,11 +76,35 @@ namespace PseudoEnumerable
             }
         }
 
+        private static IEnumerable<TResult> TransformCollection<TSource, TResult>(IEnumerable<TSource> source,
+            Converter<TSource, TResult> transformer)
+        {
+            foreach (var item in source)
+            {
+                yield return transformer(item);
+            }
+        }
+
         private static IEnumerable<TSource> ReturnSortBy<TSource>(IEnumerable<TSource> source)
         {
             foreach (var item in source)
             {
                 yield return item;
+            }
+        }
+
+        private class Adapter<TSource> : IPredicate<TSource>
+        {
+            private Predicate<TSource> predicate;
+
+            public Adapter(Predicate<TSource> predicate)
+            {
+                this.predicate = predicate;
+            }
+
+            public bool IsMatching(TSource item)
+            {
+                return predicate(item);
             }
         }
     }
