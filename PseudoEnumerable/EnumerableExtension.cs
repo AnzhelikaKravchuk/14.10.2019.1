@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace PseudoEnumerable
 {
@@ -82,8 +83,16 @@ namespace PseudoEnumerable
         public static IEnumerable<TSource> Filter<TSource>(this IEnumerable<TSource> source,
             Predicate<TSource> predicate)
         {
-            // Call EnumerableExtension.Filter with interface
-            throw new NotImplementedException();
+            return Filter(source, new FilterPredicate<TSource>(predicate));
+        }
+
+        class FilterPredicate<TSource> : IPredicate<TSource>
+        {
+            private Predicate<TSource> predicate;
+
+            public FilterPredicate(Predicate<TSource> predicate) => this.predicate = predicate;
+
+            public bool IsMatching(TSource item) => predicate(item);
         }
 
         public static IEnumerable<TResult> Transform<TSource, TResult>(this IEnumerable<TSource> source,
