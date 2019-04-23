@@ -65,8 +65,7 @@ namespace PseudoEnumerable
         public static IEnumerable<TSource> SortBy<TSource>(this IEnumerable<TSource> source,
             Comparison<TSource> comparer)
         {
-            // Call EnumerableExtension.SortBy with interface
-            throw new NotImplementedException();
+            return source.SortBy(new ComparisonAdapter<TSource>(comparer));
         }
 
         private static TElement[] ToArray<TElement>(this IEnumerable<TElement> source)

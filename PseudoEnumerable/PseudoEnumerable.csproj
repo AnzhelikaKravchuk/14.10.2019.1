@@ -41,10 +41,11 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ComparisonAdapter.cs" />
     <Compile Include="EnumerableExtension.cs" />
     <Compile Include="IPredicate.cs" />
     <Compile Include="ITransformer.cs" />
-    <Compile Include="FilterPredicate.cs" />
+    <Compile Include="PredicateAdapter.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
