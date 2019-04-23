@@ -85,8 +85,7 @@ namespace PseudoEnumerable
         public static IEnumerable<TSource> SortBy<TSource>(this IEnumerable<TSource> source,
             Comparison<TSource> comparer)
         {
-            // Call EnumerableExtension.SortBy with interface
-            throw new NotImplementedException();
+            return SortBy(source, new SortByDelegateAdapter<TSource>(comparer));
         }
 
         #region private methods
@@ -122,6 +121,9 @@ namespace PseudoEnumerable
                 throw new ArgumentException($"Array can not be empty. { nameof(sortedArray) }.");
             }
        }
+        #endregion
+
+        #region Adapters
 
         private class FilterDelegateAdapter<T> : IPredicate<T>
         {
@@ -137,6 +139,21 @@ namespace PseudoEnumerable
                 return method.Invoke(item);
             }
         }
+
+        private class SortByDelegateAdapter<T> : IComparer<T>
+        {
+            private readonly Comparison<T> comparer;
+
+            public SortByDelegateAdapter(Comparison<T> comparer)
+            {
+                this.comparer = comparer ?? throw new ArgumentNullException(nameof(SortByDelegateAdapter<T>.comparer));
+            }
+
+            public int Compare(T x, T y)
+            {
+                return comparer.Invoke(x, y);
+            }
+        } 
 
         #endregion
     }
