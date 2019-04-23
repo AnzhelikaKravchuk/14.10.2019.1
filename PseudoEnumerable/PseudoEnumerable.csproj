@@ -42,8 +42,10 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="EnumerableExtension.cs" />
+    <Compile Include="EvenNumbersPredicate.cs" />
     <Compile Include="IPredicate.cs" />
     <Compile Include="ITransformer.cs" />
+    <Compile Include="MultiplicationByTwoTransformer.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

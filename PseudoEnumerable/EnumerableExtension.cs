@@ -22,10 +22,7 @@ namespace PseudoEnumerable
             ITransformer<TSource, TResult> transformer)
         {
             Check(source, transformer);
-            foreach (var item in source)
-            {
-                yield return transformer.Transform(item);
-            }
+            return Transform(source, transformer.Transform);
         }
 
         public static IEnumerable<TSource> SortBy<TSource>(this IEnumerable<TSource> source,
@@ -49,15 +46,16 @@ namespace PseudoEnumerable
         public static IEnumerable<TSource> Filter<TSource>(this IEnumerable<TSource> source,
             Predicate<TSource> predicate)
         {
-            // Call EnumerableExtension.Filter with interface
-            throw new NotImplementedException();
+            return Filter(source, new DelegatePredicate<TSource>(predicate));
         }
-
+        
         public static IEnumerable<TResult> Transform<TSource, TResult>(this IEnumerable<TSource> source,
             Converter<TSource, TResult> transformer)
         {
-            // Implementation Day 13 Task 1 (ArrayExtension)
-            throw new NotImplementedException();
+            foreach (var item in source)
+            {
+                yield return transformer(item);
+            }
         }
 
         public static IEnumerable<TSource> SortBy<TSource>(this IEnumerable<TSource> source,
@@ -90,6 +88,21 @@ namespace PseudoEnumerable
             if (transformer == null)
             {
                 throw new ArgumentNullException($"{nameof(transformer)} cannot be null");
+            }
+        }
+
+        private class DelegatePredicate<T> : IPredicate<T>
+        {
+            Predicate<T> predicate;
+
+            public DelegatePredicate(Predicate<T> predicate)
+            {
+                this.predicate = predicate;
+            }
+
+            public bool IsMatching(T item)
+            {
+                return predicate(item);
             }
         }
     }
