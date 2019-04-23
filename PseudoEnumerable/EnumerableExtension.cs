@@ -17,12 +17,26 @@ namespace PseudoEnumerable
             }
         }
 
+        public static IEnumerable<TSource> Filter<TSource>(this IEnumerable<TSource> source,
+            Predicate<TSource> predicate)
+        {
+            PredicateDelegate<TSource> pr = new PredicateDelegate<TSource>(predicate);
+            return source.Filter(pr);
+        }
+
         public static IEnumerable<TResult> Transform<TSource, TResult>(this IEnumerable<TSource> source,
             ITransformer<TSource, TResult> transformer)
         {
+            Converter<TSource, TResult> converter = transformer.Transform;
+            return source.Transform(converter);
+        }
+
+        public static IEnumerable<TResult> Transform<TSource, TResult>(this IEnumerable<TSource> source,
+           Converter<TSource, TResult> transformer)
+        {
             foreach (var item in source)
             {
-                yield return transformer.Transform(item);
+                yield return transformer(item);
             }
         }
 
@@ -34,21 +48,7 @@ namespace PseudoEnumerable
             {
                 yield return item;
             }
-        }
-
-        public static IEnumerable<TSource> Filter<TSource>(this IEnumerable<TSource> source,
-            Predicate<TSource> predicate)
-        {
-            // Call EnumerableExtension.Filter with interface
-            throw new NotImplementedException();
-        }
-
-        public static IEnumerable<TResult> Transform<TSource, TResult>(this IEnumerable<TSource> source,
-            Converter<TSource, TResult> transformer)
-        {
-            // Implementation Day 13 Task 1 (ArrayExtension)
-            throw new NotImplementedException();
-        }
+        }   
 
         public static IEnumerable<TSource> SortBy<TSource>(this IEnumerable<TSource> source,
             Comparison<TSource> comparer)
@@ -62,6 +62,20 @@ namespace PseudoEnumerable
             List<TSource> result = new List<TSource>(collection);
             result.Sort(comparer);
             return result;
+        }
+        
+        class PredicateDelegate<TSource> : IPredicate<TSource>
+        {
+            Predicate<TSource> predicate;
+            public PredicateDelegate(Predicate<TSource> predicate)
+            {
+                this.predicate = predicate;
+            }
+
+            public bool IsMatching(TSource item)
+            {
+                return predicate(item);
+            }
         }
     }
 }
