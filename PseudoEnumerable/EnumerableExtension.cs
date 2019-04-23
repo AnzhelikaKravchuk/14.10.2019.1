@@ -9,7 +9,14 @@ namespace PseudoEnumerable
             IPredicate<TSource> predicate)
         {
             // Implementation Day 13 Task 1 (ArrayExtension)
-            throw new NotImplementedException();
+            foreach (var item in source)
+            {
+                if (predicate.IsMatching(item))
+                {
+                    yield return item;
+                }
+
+            }
         }
 
         public static IEnumerable<TResult> Transform<TSource, TResult>(this IEnumerable<TSource> source,
@@ -23,7 +30,16 @@ namespace PseudoEnumerable
             IComparer<TSource> comparer)
         {
             // Implementation Day 13 Task 1 (ArrayExtension)
-            throw new NotImplementedException();
+            List<TSource> items = new List<TSource>();
+            foreach (var item in source)
+            {
+                items.Add(item);
+            }
+            items.SortBy(comparer);
+            foreach (var item in items)
+            {
+                yield return item;
+            }
         }
 
         public static IEnumerable<TSource> Filter<TSource>(this IEnumerable<TSource> source,
