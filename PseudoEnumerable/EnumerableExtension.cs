@@ -39,8 +39,9 @@ namespace PseudoEnumerable
         public static IEnumerable<TSource> Filter<TSource>(this IEnumerable<TSource> source,
             Predicate<TSource> predicate)
         {
-            // Call EnumerableExtension.Filter with interface
-            throw new NotImplementedException();
+            var adapter = new PredicateToIPredicate<TSource>(predicate);
+
+            return Filter(source, adapter);
         }
 
         public static IEnumerable<TResult> Transform<TSource, TResult>(this IEnumerable<TSource> source,
@@ -55,6 +56,21 @@ namespace PseudoEnumerable
         {
             // Call EnumerableExtension.SortBy with interface
             throw new NotImplementedException();
+        }
+    }
+
+    internal class PredicateToIPredicate<TSource> : IPredicate<TSource>
+    {
+        private Predicate<TSource> predicate;
+
+        public PredicateToIPredicate(Predicate<TSource> predicate)
+        {
+            this.predicate = predicate;
+        }
+
+        public bool IsMatching(TSource item)
+        {
+            return predicate.Invoke(item);
         }
     }
 }
