@@ -42,5 +42,26 @@ namespace PseudoEnumerable.Tests
         {
             return number % 2 == 0;
         }
+
+        [Test]
+        public void Transform()
+        {
+            int[] input = { 5, 10, 3, 2 };
+            int[] expected = { 10, 20, 6, 4 };
+
+            var actual = input.Transform(new Converter<int, int>(TransformToSumNumber));
+
+            int i = 0;
+
+            foreach (var item in actual)
+            {
+                Assert.AreEqual(expected[i++], item);
+            }
+        }
+
+        public int TransformToSumNumber(int number)
+        {
+            return number + number;
+        }
     }
 }
