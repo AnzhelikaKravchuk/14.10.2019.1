@@ -23,8 +23,7 @@ namespace PseudoEnumerable
         public static IEnumerable<TResult> Transform<TSource, TResult>(this IEnumerable<TSource> source,
             ITransformer<TSource, TResult> transformer)
         {
-            // Call EnumerableExtension.Transform with delegate
-            throw new NotImplementedException();
+            return Transform(source, transformer.Transform);
         }
 
         public static IEnumerable<TSource> SortBy<TSource>(this IEnumerable<TSource> source,
@@ -48,15 +47,18 @@ namespace PseudoEnumerable
         public static IEnumerable<TSource> Filter<TSource>(this IEnumerable<TSource> source,
             Predicate<TSource> predicate)
         {
-            // Call EnumerableExtension.Filter with interface
-            throw new NotImplementedException();
+            return Filter(source, new PredicateAdapter<TSource>(predicate));
         }
 
         public static IEnumerable<TResult> Transform<TSource, TResult>(this IEnumerable<TSource> source,
             Converter<TSource, TResult> transformer)
         {
-            // Implementation Day 13 Task 1 (ArrayExtension)
-            throw new NotImplementedException();
+            TransformCheckingExceptions(source, transformer);
+
+            foreach (var item in source)
+            {
+                yield return transformer(item);
+            }
         }
 
         public static IEnumerable<TSource> SortBy<TSource>(this IEnumerable<TSource> source,
@@ -83,7 +85,7 @@ namespace PseudoEnumerable
             return true;
         }
 
-        private static bool TransformCheckingExceptions<TSource, TResult>(IEnumerable<TSource> array, ITransformer<TSource, TResult> transformer)
+        private static bool TransformCheckingExceptions<TSource, TResult>(IEnumerable<TSource> array, Converter<TSource, TResult> transformer)
         {
             if (array == null)
             {
@@ -149,5 +151,17 @@ namespace PseudoEnumerable
         }
 
         #endregion
+
+        private class PredicateAdapter<TSource> : IPredicate<TSource>
+        {
+            private Predicate<TSource> _predicate;
+
+            public PredicateAdapter(Predicate<TSource> predicate)
+            {
+                _predicate = predicate;
+            }
+
+            public bool IsMatching(TSource item) => _predicate.Invoke(item);
+        }
     }
 }
