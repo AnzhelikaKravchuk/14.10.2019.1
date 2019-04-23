@@ -8,22 +8,51 @@ namespace PseudoEnumerable
         public static IEnumerable<TSource> Filter<TSource>(this IEnumerable<TSource> source,
             IPredicate<TSource> predicate)
         {
-            // Implementation Day 13 Task 1 (ArrayExtension)
-            throw new NotImplementedException();
+            Validation(source);
+            return FilterCore();
+
+            IEnumerable<TSource> FilterCore()
+            {
+                foreach (var number in source)
+                {
+                    if (predicate.IsMatching(number))
+                    {
+                        yield return number;
+                    }
+                }
+            }
         }
 
         public static IEnumerable<TResult> Transform<TSource, TResult>(this IEnumerable<TSource> source,
             ITransformer<TSource, TResult> transformer)
         {
-            // Call EnumerableExtension.Transform with delegate
-            throw new NotImplementedException();
+            Validation(source);
+            return TransformCore();
+
+            IEnumerable<TResult> TransformCore()
+            {
+                foreach (var element in source)
+                {
+                    yield return transformer.Transform(element);
+                }
+            }
         }
 
         public static IEnumerable<TSource> SortBy<TSource>(this IEnumerable<TSource> source,
             IComparer<TSource> comparer)
         {
-            // Implementation Day 13 Task 1 (ArrayExtension)
-            throw new NotImplementedException();
+            Validation(source);
+            return SortByCore();
+
+            IEnumerable<TSource> SortByCore()
+            {
+                List<TSource> list = new List<TSource>(source);             
+                list.Sort(comparer);
+                foreach (var element in list)
+                {
+                    yield return element;
+                }
+            }
         }
 
         public static IEnumerable<TSource> Filter<TSource>(this IEnumerable<TSource> source,
@@ -46,5 +75,21 @@ namespace PseudoEnumerable
             // Call EnumerableExtension.SortBy with interface
             throw new NotImplementedException();
         }
+
+        private static void Validation<T>(IEnumerable<T> source)
+        {
+            if (source is null)
+            {
+                throw new ArgumentNullException($"{nameof(source)} is null");
+            }
+
+            ICollection<T> collection = source as ICollection<T>;
+
+            if (collection.Count is 0)
+            {
+                throw new ArgumentException($"{nameof(source)} is empty");
+            }
+        }
+
     }
 }
