@@ -5,6 +5,20 @@ namespace PseudoEnumerable
 {
     public static class EnumerableExtension
     {
+        class CustPred<T> : IPredicate<T>
+        {
+            Predicate<T> pred;
+
+            public CustPred(Predicate<T> pred)
+            {
+                this.pred = pred;
+            }
+
+            public bool IsMatching(T item)
+            {
+                return pred(item);
+            }
+        }
         public static IEnumerable<TSource> Filter<TSource>(this IEnumerable<TSource> source,
             IPredicate<TSource> predicate)
         {
@@ -46,10 +60,15 @@ namespace PseudoEnumerable
             Predicate<TSource> predicate)
         {
             // Call EnumerableExtension.Filter with interface
-            throw new NotImplementedException();
+            
+            return Filter(source, new CustPred<TSource>(predicate));
+
+    
         }
 
-        public static IEnumerable<TResult> Transform<TSource, TResult>(this IEnumerable<TSource> source,
+
+
+    public static IEnumerable<TResult> Transform<TSource, TResult>(this IEnumerable<TSource> source,
             Converter<TSource, TResult> transformer)
         {
             // Implementation Day 13 Task 1 (ArrayExtension)
@@ -62,5 +81,7 @@ namespace PseudoEnumerable
             // Call EnumerableExtension.SortBy with interface
             throw new NotImplementedException();
         }
-    }
+
+
+}
 }
