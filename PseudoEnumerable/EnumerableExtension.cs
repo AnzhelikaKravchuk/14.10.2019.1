@@ -8,13 +8,13 @@ namespace PseudoEnumerable
         public static IEnumerable<TSource> Filter<TSource>(this IEnumerable<TSource> source,
             IPredicate<TSource> predicate)
         {
-                foreach (TSource item in source)
+            foreach (TSource item in source)
+            {
+                if (predicate.IsMatching(item))
                 {
-                    if (predicate.IsMatching(item))
-                    {
-                        yield return item;
-                    }
+                    yield return item;
                 }
+            }
         }
 
         public static IEnumerable<TResult> Transform<TSource, TResult>(this IEnumerable<TSource> source,
