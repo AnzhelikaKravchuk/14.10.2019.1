@@ -12,7 +12,14 @@
   - [`Converter<TInput,TOutput>`](https://docs.microsoft.com/en-us/dotnet/api/system.converter-2?view=netframework-4.8)
   - [`Comparison<T>`](https://docs.microsoft.com/en-us/dotnet/api/system.comparison-1?view=netframework-4.8)
 
+-[Решение](https://github.com/kateLap/23.04.2019.1/tree/master/PseudoEnumerable)
+
 - При реализации "методов-двойников" использовать:
     - для методов (Filter, SortBy) с параметрами делегатами вызовы методов с параметром интерфейсом;
     - для метода (Transform) с параметром интерфейсом вызов метода с параметром делегатом.
+
+- [Решение](https://github.com/kateLap/23.04.2019.1/tree/master/PseudoEnumerable)
+
 - Проверить работу разработанных методов, используя различные типы данных.
+
+-[Тесты](https://github.com/kateLap/23.04.2019.1/blob/master/PseudoEnumerable.Tests/EnumerableExtensionTests.cs)
