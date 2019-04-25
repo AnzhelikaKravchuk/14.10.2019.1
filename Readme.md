@@ -6,6 +6,7 @@
 4. Синхронизировать изменения с содержимым своего репозитория на gitub-e.
 5. Сделать pull request к данному репозиторию.
 
+
 ## Постановка задания
 - Добавить в класс ArrayExtension (класс переименовать в EnumerableExtension) [Day 13 (Day 10)](https://github.com/AnzhelikaKravchuk/.NET-Training.-Spring-2019/tree/master/Day%2013%20-%2016.04.2019) перегруженные версии обобщенно-типизированных методов расширений типизированного интерфейса `IEnumerable<T>`, используя в качестве передаваемых параметов (стратегий фильтрации, трансформации, сравнения) соответствующие делегаты 
   - [`Predicate<T>`](https://docs.microsoft.com/en-us/dotnet/api/system.predicate-1?view=netframework-4.8) 
