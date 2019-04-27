@@ -1,8 +1,5 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace PseudoEnumerable
 {
@@ -17,7 +14,7 @@ namespace PseudoEnumerable
 
         bool IPredicate<T>.IsMatching(T item)
         {
-            return predicate.Invoke(item);
+            return predicate(item);
         }
     }
 }
