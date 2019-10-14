@@ -1,59 +1,143 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Runtime.CompilerServices;
+
 using PseudoEnumerable.Interfaces;
 
+// ReSharper disable StyleCop.SA1402
 namespace PseudoEnumerable
 {
     public static class EnumerableExtension
     {
         #region Implementation through interfaces
 
-        public static IEnumerable<TSource> Filter<TSource>(this IEnumerable<TSource> source,
+        public static IEnumerable<TSource> Filter<TSource>(
+            this IEnumerable<TSource> source,
             IPredicate<TSource> predicate)
         {
-            // Add implementation method Filter from class ArrayExtension (Homework Day 9. 03.10.2019 Tasks 1-2)
-            throw new NotImplementedException();
+            if (source == null)
+            {
+                throw new ArgumentNullException(nameof(source), "Array can't be null");
+            }
+
+            if (predicate == null)
+            {
+                throw new ArgumentNullException(nameof(predicate));
+            }
+
+            foreach (var i in source)
+            {
+                if (predicate.IsMatching(i))
+                {
+                    yield return i;
+                }
+            }
         }
 
-        public static IEnumerable<TResult> Transform<TSource, TResult>(this IEnumerable<TSource> source,
+        public static IEnumerable<TResult> Transform<TSource, TResult>(
+            this IEnumerable<TSource> source,
             ITransformer<TSource, TResult> transformer)
         {
             // Call EnumerableExtension.Transform with delegate
-            throw new NotImplementedException();
+            return source.Transform(transformer.Transform);
         }
 
-        public static IEnumerable<TSource> OrderAccordingTo<TSource>(this IEnumerable<TSource> source,
+        public static IEnumerable<TSource> OrderAccordingTo<TSource>(
+            this IEnumerable<TSource> source,
             IComparer<TSource> comparer)
         {
-            // Add implementation method OrderAccordingTo from class ArrayExtension (Homework Day 9. 03.10.2019 Tasks 1-2)
-            throw new NotImplementedException();
+            if (source is null)
+            {
+                throw new ArgumentNullException(nameof(source));
+            }
+
+            if (comparer is null)
+            {
+                throw new ArgumentNullException(nameof(comparer));
+            }
+
+            return Sort(source, comparer);
         }
 
         #endregion
-        
+
         #region Implementation vs delegates
 
-        public static IEnumerable<TSource> Filter<TSource>(this IEnumerable<TSource> source,
+        public static IEnumerable<TSource> Filter<TSource>(
+            this IEnumerable<TSource> source,
             Predicate<TSource> predicate)
         {
-            // Call EnumerableExtension.Filter with interface
-            throw new NotImplementedException();
+            if (source == null)
+            {
+                throw new ArgumentNullException(nameof(source), "Array can't be null");
+            }
+
+            if (predicate == null)
+            {
+                throw new ArgumentNullException(nameof(predicate));
+            }
+
+            return source.Filter(new PredicateAdapter<TSource>(predicate));
         }
 
-        public static IEnumerable<TResult> Transform<TSource, TResult>(this IEnumerable<TSource> source,
+        public static IEnumerable<TResult> Transform<TSource, TResult>(
+            this IEnumerable<TSource> source,
             Converter<TSource, TResult> transformer)
         {
             // Implementation logic vs delegate Converter here 
             throw new NotImplementedException();
         }
 
-        public static IEnumerable<TSource> OrderAccordingTo<TSource>(this IEnumerable<TSource> source,
+        public static IEnumerable<TSource> OrderAccordingTo<TSource>(
+            this IEnumerable<TSource> source,
             Comparison<TSource> comparer)
         {
-            // Call EnumerableExtension.OrderAccordingTo with interface
-            throw new NotImplementedException();
+            return source.OrderAccordingTo(Comparer<TSource>.Create(comparer));
         }
 
         #endregion
+
+        private static T[] Sort<T>(IEnumerable<T> array, IComparer<T> comparer)
+        {
+            bool flag = true;
+            var enumerable = array as T[] ?? array.ToArray();
+            while (flag)
+            {
+                flag = false;
+                for (int j = 0; j < enumerable.ToList().Count - 1; j++)
+                {
+                    if (comparer.Compare(enumerable[j], enumerable[j + 1]) > 0)
+                    {
+                        Swap(ref enumerable[j], ref enumerable[j + 1]);
+                        flag = true;
+                    }
+                }
+            }
+
+            return enumerable;
+        }
+
+        private static void Swap<T>(ref T lhs, ref T rhs)
+        {
+            T tmpParam = lhs;
+            lhs = rhs;
+            rhs = tmpParam;
+        }
+    }
+
+    internal class PredicateAdapter<TSource> : IPredicate<TSource>
+    {
+        private readonly Predicate<TSource> predicate;
+
+        public PredicateAdapter(Predicate<TSource> predicate)
+        {
+            this.predicate = predicate;
+        }
+
+        public bool IsMatching(TSource item)
+        {
+            return this.predicate.Invoke(item);
+        }
     }
 }
