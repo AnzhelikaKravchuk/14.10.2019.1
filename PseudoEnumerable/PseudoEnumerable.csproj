@@ -41,7 +41,6 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="ConcreteOrderingTo.cs" />
     <Compile Include="ConcretePredicate.cs" />
     <Compile Include="EnumerableExtension.cs" />
     <Compile Include="Interfaces\IPredicate.cs" />

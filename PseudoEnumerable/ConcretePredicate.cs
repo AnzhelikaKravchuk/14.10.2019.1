@@ -3,16 +3,16 @@ using System;
 
 namespace PseudoEnumerable
 {
-    class ConcretePredicate<T> : IPredicate<T>
+    class ConcretePredicate<TSource> : IPredicate<TSource>
     {
-        private readonly Predicate<T> predicate;
+        private readonly Predicate<TSource> predicate;
 
-        public ConcretePredicate(Predicate<T> predicate)
+        public ConcretePredicate(Predicate<TSource> predicate)
         {
             this.predicate = predicate;
         }
 
-        public bool IsMatching(T item)
+        public bool IsMatching(TSource item)
         {
             return predicate(item);
         }

@@ -111,7 +111,7 @@ namespace PseudoEnumerable
             Comparison<TSource> comparer)
         {
             // Call EnumerableExtension.OrderAccordingTo with interface
-            return OrderAccordingTo<TSource>(source, new ConcreteOrderingTo<TSource>(comparer));
+            return OrderAccordingTo<TSource>(source, Comparer<TSource>.Create(comparer));
         }
 
         #endregion
