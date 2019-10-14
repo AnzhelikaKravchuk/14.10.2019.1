@@ -50,7 +50,7 @@ namespace PseudoEnumerable
                 throw new ArgumentNullException(nameof(comparer));
             }
 
-            return Sort(source, comparer);
+            return Sort(source.ToArray(), comparer);
         }
 
         #endregion
@@ -98,24 +98,23 @@ namespace PseudoEnumerable
 
         #endregion
 
-        private static T[] Sort<T>(IEnumerable<T> array, IComparer<T> comparer)
+        private static IEnumerable<T> Sort<T>(T[] array, IComparer<T> comparer)
         {
             bool flag = true;
-            var enumerable = array as T[] ?? array.ToArray();
             while (flag)
             {
                 flag = false;
-                for (int j = 0; j < enumerable.ToList().Count - 1; j++)
+                for (int j = 0; j < array.Length - 1; j++)
                 {
-                    if (comparer.Compare(enumerable[j], enumerable[j + 1]) > 0)
+                    if (comparer.Compare(array[j], array[j + 1]) > 0)
                     {
-                        Swap(ref enumerable[j], ref enumerable[j + 1]);
+                        Swap(ref array[j], ref array[j + 1]);
                         flag = true;
                     }
                 }
             }
 
-            return enumerable;
+            return array;
         }
 
         private static void Swap<T>(ref T lhs, ref T rhs)
