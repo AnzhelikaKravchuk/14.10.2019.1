@@ -86,7 +86,20 @@ namespace PseudoEnumerable
             Converter<TSource, TResult> transformer)
         {
             // Implementation logic vs delegate Converter here 
-            throw new NotImplementedException();
+            if (source == null)
+            {
+                throw new ArgumentNullException(nameof(source), "Array can't be null");
+            }
+
+            if (transformer == null)
+            {
+                throw new ArgumentNullException(nameof(transformer));
+            }
+
+            foreach (TSource item in source)
+            {
+                yield return transformer(item);
+            }
         }
 
         public static IEnumerable<TSource> OrderAccordingTo<TSource>(
@@ -137,7 +150,7 @@ namespace PseudoEnumerable
 
         public bool IsMatching(TSource item)
         {
-            return this.predicate.Invoke(item);
+            return this.predicate(item);
         }
     }
 }
