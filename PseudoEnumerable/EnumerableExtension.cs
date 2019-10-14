@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Runtime.CompilerServices;
 
 using PseudoEnumerable.Interfaces;
 
@@ -12,9 +11,7 @@ namespace PseudoEnumerable
     {
         #region Implementation through interfaces
 
-        public static IEnumerable<TSource> Filter<TSource>(
-            this IEnumerable<TSource> source,
-            IPredicate<TSource> predicate)
+        public static IEnumerable<TSource> Filter<TSource>(this IEnumerable<TSource> source, IPredicate<TSource> predicate)
         {
             if (source == null)
             {
@@ -35,17 +32,13 @@ namespace PseudoEnumerable
             }
         }
 
-        public static IEnumerable<TResult> Transform<TSource, TResult>(
-            this IEnumerable<TSource> source,
-            ITransformer<TSource, TResult> transformer)
+        public static IEnumerable<TResult> Transform<TSource, TResult>(this IEnumerable<TSource> source, ITransformer<TSource, TResult> transformer)
         {
             // Call EnumerableExtension.Transform with delegate
             return source.Transform(transformer.Transform);
         }
 
-        public static IEnumerable<TSource> OrderAccordingTo<TSource>(
-            this IEnumerable<TSource> source,
-            IComparer<TSource> comparer)
+        public static IEnumerable<TSource> OrderAccordingTo<TSource>(this IEnumerable<TSource> source, IComparer<TSource> comparer)
         {
             if (source is null)
             {
@@ -64,9 +57,7 @@ namespace PseudoEnumerable
 
         #region Implementation vs delegates
 
-        public static IEnumerable<TSource> Filter<TSource>(
-            this IEnumerable<TSource> source,
-            Predicate<TSource> predicate)
+        public static IEnumerable<TSource> Filter<TSource>(this IEnumerable<TSource> source, Predicate<TSource> predicate)
         {
             if (source == null)
             {
@@ -81,9 +72,7 @@ namespace PseudoEnumerable
             return source.Filter(new PredicateAdapter<TSource>(predicate));
         }
 
-        public static IEnumerable<TResult> Transform<TSource, TResult>(
-            this IEnumerable<TSource> source,
-            Converter<TSource, TResult> transformer)
+        public static IEnumerable<TResult> Transform<TSource, TResult>(this IEnumerable<TSource> source, Converter<TSource, TResult> transformer)
         {
             // Implementation logic vs delegate Converter here 
             if (source == null)
@@ -102,9 +91,7 @@ namespace PseudoEnumerable
             }
         }
 
-        public static IEnumerable<TSource> OrderAccordingTo<TSource>(
-            this IEnumerable<TSource> source,
-            Comparison<TSource> comparer)
+        public static IEnumerable<TSource> OrderAccordingTo<TSource>(this IEnumerable<TSource> source, Comparison<TSource> comparer)
         {
             return source.OrderAccordingTo(Comparer<TSource>.Create(comparer));
         }
