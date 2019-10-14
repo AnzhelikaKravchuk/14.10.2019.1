@@ -1,9 +1,8 @@
-﻿using PseudoEnumerable;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 
 namespace PseudoEnumerable.Tests
 {
-    [TestFixture()]
+    [TestFixture]
     public class EnumerableExtensionTests
     {
         [Test]
@@ -24,7 +23,7 @@ namespace PseudoEnumerable.Tests
             Assert.AreEqual(EnumerableExtension.Filter(array, x => x % 2 == 0), expected);
         }
 
-        [Test()]
+        [Test]
         public void TransformTest()
         {
             var array = new int[] { 1, 2, 3, 4, 5, 6, 7, 8, 9, 10 };

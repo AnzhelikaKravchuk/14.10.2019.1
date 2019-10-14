@@ -36,7 +36,7 @@ namespace PseudoEnumerable
             ITransformer<TSource, TResult> transformer)
         {
             // Call EnumerableExtension.Transform with delegate
-            return Transform<TSource, TResult>(source, x => transformer.Transform(x));
+            return Transform<TSource, TResult>(source, new Converter<TSource, TResult>(transformer.Transform));
         }
 
         public static IEnumerable<TSource> OrderAccordingTo<TSource>(this IEnumerable<TSource> source,
