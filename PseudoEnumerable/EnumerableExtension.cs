@@ -84,7 +84,7 @@ namespace PseudoEnumerable
             Predicate<TSource> predicate)
         {
             // Call EnumerableExtension.Filter with interface
-            return Filter<TSource>(source, predicate);
+            return Filter<TSource>(source, new ConcretePredicate<TSource>(predicate));
         }
 
         public static IEnumerable<TResult> Transform<TSource, TResult>(this IEnumerable<TSource> source,
@@ -111,7 +111,7 @@ namespace PseudoEnumerable
             Comparison<TSource> comparer)
         {
             // Call EnumerableExtension.OrderAccordingTo with interface
-            return OrderAccordingTo<TSource>(source, comparer);
+            return OrderAccordingTo<TSource>(source, new ConcreteOrderingTo<TSource>(comparer));
         }
 
         #endregion
