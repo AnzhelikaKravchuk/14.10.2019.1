@@ -41,6 +41,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ConcretePredicate.cs" />
     <Compile Include="EnumerableExtension.cs" />
     <Compile Include="Interfaces\IPredicate.cs" />
     <Compile Include="Interfaces\ITransformer.cs" />
